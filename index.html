@@ -381,7 +381,8 @@
   </div>
 </section>
 
-<footer>
+<footer> 
+
   <p>Email: info@nanaadjeiplaza.com</p>
   <p>Phone: +233 591 617 235 / +233 243 240 202</p>
   <p>Location: PIWC-Junction Kotei, Kumasi</p>
@@ -389,16 +390,20 @@
 </footer>
 
 <script>
-  // Facilities auto popup
-  window.addEventListener("scroll", () => {
-    const section = document.getElementById("roomsSection");
-    const popup = document.getElementById("facilitiesPopup");
-    const rect = section.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom >= 0) {
-      popup.style.display = "block";
-      setTimeout(() => popup.style.display = "none", 10000);
-    }
-  });
+  const roomsSection = document.getElementById("roomsSection");
+const facilitiesPopup = document.getElementById("facilitiesPopup");
+
+roomsSection.addEventListener("mouseenter", () => {
+  facilitiesPopup.style.display = "block";
+  setTimeout(() => {
+    facilitiesPopup.style.display = "none";
+  }, 10000); // 10 seconds
+});
+
+roomsSection.addEventListener("mouseleave", () => {
+  facilitiesPopup.style.display = "none";
+  // Clear timeout if needed (store the timeout ID if you want to add this)
+});
 
   // Image zoom effect with 30-second duration
   document.querySelectorAll('.room-card').forEach(card => {
