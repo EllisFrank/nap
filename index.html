@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nana Adjei Plaza - Premium Student Accommodation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FFA630;
+      --primary-dark: #E68B1C;
+      --secondary: #2E3532;
+      --light: #F7F7F7;
+      --dark: #1E1E1E;
+      --accent: #D64045;
+      --text: #333333;
+      --text-light: #666666;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      background-color: var(--light);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    a, a:visited, a:active {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header Styles */
+    header {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background-color: var(--secondary);
+    }
+
+    .header-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .slide::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(30,30,30,0.8) 0%, rgba(30,30,30,0.4) 100%);
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      width: 50%;
+      padding: 0 40px;
+    }
+
+    .logo {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--light);
+      z-index: 3;
+    }
+
+    .header-content h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      color: var(--light);
+    }
+
+    .header-content p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      color: rgba(255,255,255,0.9);
+      max-width: 500px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: var(--dark);
+      padding: 15px 40px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Rooms Section */
+    .rooms {
+      padding: 100px 0;
+      background-color: var(--light);
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin-bottom: 15px;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--primary);
+      margin: 0 auto;
+    }
+
+    .room-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 40px;
+    }
+
+    .room-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .room-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .image-container {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: all 0.5s ease-in-out;
+    }
+
+    /* Initial state - room image visible */
+    .image-container img.room {
+      opacity: 1;
+      z-index: 1;
+    }
+    
+    /* Initial state - balcony image hidden */
+    .image-container img.balcony {
+      opacity: 0;
+      z-index: 2;
+    }
+
+    /* Zoomed state - show full image */
+    .image-container img.zoomed {
+      object-fit: contain;
+      background-color: #f5f5f5;
+      transform: scale(1.05);
+    }
+
+    .room-details {
+      padding: 30px;
+    }
+
+    .room-details h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--secondary);
+    }
+
+    .room-details p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    .room-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .book-btn {
+      background: var(--primary);
+      color: var(--dark);
+      padding: 10px 25px;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .book-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Split Layout Section */
+    .split-section {
+      display: flex;
+      min-height: 600px;
+      background: var(--light);
+    }
+
+    .split-image {
+      flex: 1;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .split-content {
+      flex: 1;
+      padding: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: var(--secondary);
+      color: var(--light);
+    }
+
+    .split-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: var(--primary);
+    }
+
+    .split-content p {
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    /* Facilities Section */
+    .facilities {
+      padding: 100px 0;
+      background-color: white;
+    }
+
+    .facility-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .facility-item {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--light);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .facility-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .facility-icon {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .facility-item h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--secondary);
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--secondary);
+      color: var(--light);
+      padding: 60px 0 30px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-column h3 {
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      color: var(--primary);
+    }
+
+    .footer-column p, .footer-column a {
+      margin-bottom: 15px;
+      display: block;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+
+    .footer-column a:hover {
+      opacity: 1;
+      color: var(--primary);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      opacity: 0.7;
+    }
+
+    /* Popup */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+
+    .popup-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-box {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      transform: translateY(20px);
+      transition: all 0.3s;
+    }
+
+    .popup-overlay.active .popup-box {
+      transform: translateY(0);
+    }
+
+    .popup-box h2 {
+      color: var(--secondary);
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    .popup-box p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    .account-details {
+      background: var(--light);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 25px 0;
+      text-align: left;
+    }
+
+    .account-details p {
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .account-details strong {
+      color: var(--secondary);
+    }
+
+    .popup-btn {
+      background: var(--primary);
+      color: var(--dark);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .popup-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 1024px) {
+      .header-content {
+        width: 60%;
+      }
+
+      .split-section {
+        flex-direction: column;
+      }
+
+      .split-image {
+        height: 400px;
+      }
+
+      .split-content {
+        padding: 60px 40px;
+      }
+
+      .image-container {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        width: 100%;
+        padding: 0 30px;
+        text-align: center;
+      }
+
+      .header-content h1 {
+        font-size: 2.8rem;
+      }
+
+      .header-content p {
+        margin: 0 auto 30px;
+      }
+
+      .section-title h2 {
+        font-size: 2.2rem;
+      }
+
+      .room-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .split-content {
+        padding: 50px 30px;
+      }
+
+      .split-content h2 {
+        font-size: 2.2rem;
+      }
+
+      .image-container {
+        height: 220px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 24px;
+        left: 20px;
+      }
+
+      .header-content h1 {
+        font-size: 2.2rem;
+      }
+
+      .header-content p {
+        font-size: 1rem;
+      }
+
+      .btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+      }
+
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+
+      .room-details {
+        padding: 20px;
+      }
+
+      .room-details h3 {
+        font-size: 1.5rem;
+      }
+
+      .split-content {
+        padding: 40px 20px;
+      }
+
+      .split-content h2 {
+        font-size: 1.8rem;
+      }
+
+      .image-container {
+        height: 200px;
+      }
+
+      .facility-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Popup -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <h2>Before You Proceed</h2>
+    <p>Please note our official account details. Only make payments to these numbers.</p>
+    <div class="account-details">
+      <p><strong>Bank Name:</strong> CALBANK</p>
+      <p><strong>Account Name:</strong> FRANK ELLIS KONDUAH</p>
+      <p><strong>Account Number:</strong> 140007878216</p>
+      <p>Send your receipt to: 0591617235</p>
+    </div>
+    <button class="popup-btn" onclick="closePopup()">Continue</button>
+  </div>
+</div>
+
+<header>
+  <div class="header-bg">
+    <div class="slide active" style="background-image: url('https://lh3.googleusercontent.com/p/AF1QipNnh1wDNyC9Ykqs1CZajmQ6fnPsQipOOMlF-5Q-=s680-w680-h510-rw')"></div>
+    <div class="slide" style="background-image: url('https://lh3.googleusercontent.com/p/AF1QipO6RuBamdHV01rKCQ35uGj73CJbLBbpyl4pyTLA=s1360-w1360-h1020-rw')"></div>
+  </div>
+  <div class="logo">NANA ADJEI PLAZA</div>
+  <div class="container">
+    <div class="header-content">
+      <h1>Find Your Perfect Student Accommodation</h1>
+      <p>Modern, comfortable living spaces designed for students who value quality, security, and convenience.</p>
+      <a href="#rooms" class="btn">View Rooms</a>
+    </div>
+  </div>
+</header>
+
+<section class="rooms" id="rooms">
+  <div class="container">
+    <div class="section-title">
+      <h2>Our Room Options</h2>
+    </div>
+    <div class="room-grid">
+      <!-- 2-in-1 Room -->
+      <div class="room-card">
+        <div class="image-container">
+          <img src="https://lh3.googleusercontent.com/p/AF1QipOnZSiTi0dGwhgAkM7SA9RMGZZsnZbXNqo3AkOL=s1360-w1360-h1020-rw" class="room" alt="2-in-1 Room">
+          <img src="https://lh3.googleusercontent.com/p/AF1QipOynP9c8Rd5GmZveov88g4jMV6rixnxprFj1E1v=s680-w680-h510-rw" class="balcony" alt="2-in-1 Balcony">
+        </div>
+        <div class="room-details">
+          <h3>2-in-1 Room</h3>
+          <p>Shared room with separate beds and study desks. Perfect for students who want privacy while sharing costs.</p>
+          <div class="room-meta">
+            <div class="price">GH₵7,000 / Year</div>
+            <a href="https://forms.gle/VRagwUnHKAGanKaZ7" target="_blank" class="book-btn">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3-in-1 Room -->
+      <div class="room-card">
+        <div class="image-container">
+          <img src="https://lh3.googleusercontent.com/p/AF1QipPkP0MulRTYy43WQzL_YpPqAlstlpiEwfUqSGVZ=s1360-w1360-h1020-rw" class="room" alt="3-in-1 Room">
+          <img src="https://lh3.googleusercontent.com/p/AF1QipMEV6Q_QXIunAWbSZRQdNWD-pkHaL-lkJTmxAU4=s1360-w1360-h1020-rw" class="balcony" alt="3-in-1 Balcony">
+        </div>
+        <div class="room-details">
+          <h3>3-in-1 Room</h3>
+          <p>Shared room with storage and study table. Economical option for groups of three friends.</p>
+          <div class="room-meta">
+            <div class="price">GH₵5,000 / Year</div>
+            <a href="https://forms.gle/VRagwUnHKAGanKaZ7" target="_blank" class="book-btn">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="facilities">
+  <div class="container">
+    <div class="section-title">
+      <h2>Our Facilities</h2>
+    </div>
+    <div class="facility-grid">
+      <div class="facility-item">
+        <div class="facility-icon">💧</div>
+        <h3>24/7 Water Supply</h3>
+        <p>Never worry about water shortages with our reliable supply system</p>
+      </div>
+      <div class="facility-item">
+        <div class="facility-icon">🔒</div>
+        <h3>Security & CCTV</h3>
+        <p>Your safety is our priority with 24/7 security monitoring</p>
+      </div>
+      <div class="facility-item">
+        <div class="facility-icon">🧹</div>
+        <h3>Free Cleaning</h3>
+        <p>Regular professional cleaning services included</p>
+      </div>
+      <div class="facility-item">
+        <div class="facility-icon">❄️</div>
+        <h3>Air Conditioning</h3>
+        <p>Stay comfortable year-round with climate control</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <a href="tel:+233591617235">+233 591 617 235</a>
+        <a href="tel:+233243240202">+233 243 240 202</a>
+        <a href="mailto:info@nanaadjeiplaza.com">info@nanaadjeiplaza.com</a>
+      </div>
+      <div class="footer-column">
+        <h3>Location</h3>
+        <p>PIWC-Junction Kotei</p>
+        <p>Kumasi, Ghana</p>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <a href="#rooms">Room Options</a>
+        <a href="https://forms.gle/VRagwUnHKAGanKaZ7" target="_blank">Booking Form</a>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2025 Nana Adjei Plaza. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Background slideshow
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  
+  function showSlide(n) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    currentSlide = (n + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }
+  
+  function nextSlide() {
+    showSlide(currentSlide + 1);
+  }
+  
+  // Change slide every 5 seconds
+  setInterval(nextSlide, 5000);
+  
+  // Initialize first slide
+  showSlide(0);
+
+  // Room image hover effect with balcony view
+  document.querySelectorAll('.room-card').forEach(card => {
+    const roomImg = card.querySelector('.room');
+    const balconyImg = card.querySelector('.balcony');
+    let zoomTimeout;
+    let balconyTimeout;
+    
+    card.addEventListener('mouseenter', () => {
+      // Clear any existing timeouts
+      clearTimeout(zoomTimeout);
+      clearTimeout(balconyTimeout);
+      
+      // After 3 seconds, show balcony image
+      balconyTimeout = setTimeout(() => {
+        roomImg.style.opacity = '0';
+        balconyImg.style.opacity = '1';
+        balconyImg.classList.add('zoomed');
+      }, 3000);
+      
+      // Add zoom class to room image immediately
+      roomImg.classList.add('zoomed');
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      // Clear the timeouts if user leaves
+      clearTimeout(zoomTimeout);
+      clearTimeout(balconyTimeout);
+      
+      // Immediately reset both images
+      roomImg.style.opacity = '1';
+      roomImg.classList.remove('zoomed');
+      balconyImg.style.opacity = '0';
+      balconyImg.classList.remove('zoomed');
+    });
+  });
+
+  // Touch support for mobile devices
+  document.querySelectorAll('.room-card').forEach(card => {
+    let touchTimer;
+    const roomImg = card.querySelector('.room');
+    const balconyImg = card.querySelector('.balcony');
+    
+    card.addEventListener('touchstart', () => {
+      // Show balcony image after 3 seconds of touch
+      touchTimer = setTimeout(() => {
+        roomImg.style.opacity = '0';
+        balconyImg.style.opacity = '1';
+        balconyImg.classList.add('zoomed');
+      }, 3000);
+      
+      // Zoom room image immediately
+      roomImg.classList.add('zoomed');
+    });
+    
+    card.addEventListener('touchend', () => {
+      // Clear the timer if touch ends
+      clearTimeout(touchTimer);
+      
+      // Reset both images
+      roomImg.style.opacity = '1';
+      roomImg.classList.remove('zoomed');
+      balconyImg.style.opacity = '0';
+      balconyImg.classList.remove('zoomed');
+    });
+  });
+
+  // Popup functionality
+  function showPopup() {
+    document.getElementById('popup').classList.add('active');
+  }
+
+  function closePopup() {
+    document.getElementById('popup').classList.remove('active');
+  }
+
+  // Show popup after 3 seconds
+  setTimeout(showPopup, 3000);
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop - 80,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
