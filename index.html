@@ -743,65 +743,38 @@ This option features:
   showSlide(0);
 
   // Automatic image switching for all room cards
-document.addEventListener('DOMContentLoaded', function() {
-  const roomCards = document.querySelectorAll('.room-card');
-  
-  roomCards.forEach(card => {
-    let isShowingRoom = true;
-    const roomImg = card.querySelector('.room');
-    const balconyImg = card.querySelector('.balcony');
+  document.addEventListener('DOMContentLoaded', function() {
+    const roomCards = document.querySelectorAll('.room-card');
     
-    // Start the switching immediately
-    const switchImages = () => {
-      if(isShowingRoom) {
-        roomImg.style.opacity = '0';
-        balconyImg.style.opacity = '1';
-      } else {
-        roomImg.style.opacity = '1';
-        balconyImg.style.opacity = '0';
-      }
-      isShowingRoom = !isShowingRoom;
-    };
-    
-    // Switch every 5 seconds (5000ms)
-    setInterval(switchImages, 5000);
-    
-    // First switch after 3 seconds
-    setTimeout(switchImages, 3000);
-  });
-});
-
-  // Touch support for mobile devices
-  document.querySelectorAll('.room-card').forEach(card => {
-    let touchTimer;
-    const roomImg = card.querySelector('.room');
-    const balconyImg = card.querySelector('.balcony');
-    
-    card.addEventListener('touchstart', () => {
-      // Show balcony image after 3 seconds of touch
-      touchTimer = setTimeout(() => {
-        roomImg.style.opacity = '0';
-        balconyImg.style.opacity = '1';
-        balconyImg.classList.add('zoomed');
-      }, 3000);
+    roomCards.forEach(card => {
+      let isShowingRoom = true;
+      const roomImg = card.querySelector('.room');
+      const balconyImg = card.querySelector('.balcony');
       
-      // Zoom room image immediately
-      roomImg.classList.add('zoomed');
-    });
-    
-    card.addEventListener('touchend', () => {
-      // Clear the timer if touch ends
-      clearTimeout(touchTimer);
+      const switchImages = () => {
+        roomImg.style.transition = 'opacity 0.5s ease-in-out';
+        balconyImg.style.transition = 'opacity 0.5s ease-in-out';
+        
+        if(isShowingRoom) {
+          roomImg.style.opacity = '0';
+          balconyImg.style.opacity = '1';
+        } else {
+          roomImg.style.opacity = '1';
+          balconyImg.style.opacity = '0';
+        }
+        isShowingRoom = !isShowingRoom;
+      };
       
-      // Reset both images
-      roomImg.style.opacity = '1';
-      roomImg.classList.remove('zoomed');
-      balconyImg.style.opacity = '0';
-      balconyImg.classList.remove('zoomed');
+      // Switch every 5 seconds (5000ms)
+      setInterval(switchImages, 5000);
+      
+      // First switch after 3 seconds
+      setTimeout(switchImages, 3000);
     });
   });
 
-  // Popup functionality
+  // Remove all touch/hover event listeners - we don't need them anymore
+  // Keep the popup functionality
   function showPopup() {
     document.getElementById('popup').classList.add('active');
   }
@@ -813,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Show popup after 3 seconds
   setTimeout(showPopup, 3000);
 
-  // Smooth scrolling for anchor links
+  // Keep smooth scrolling for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
