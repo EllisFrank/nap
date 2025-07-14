@@ -742,41 +742,34 @@ This option features:
   // Initialize first slide
   showSlide(0);
 
-  // Room image hover effect with balcony view
-  document.querySelectorAll('.room-card').forEach(card => {
+  // Automatic image switching for all room cards
+document.addEventListener('DOMContentLoaded', function() {
+  const roomCards = document.querySelectorAll('.room-card');
+  
+  roomCards.forEach(card => {
+    let isShowingRoom = true;
     const roomImg = card.querySelector('.room');
     const balconyImg = card.querySelector('.balcony');
-    let zoomTimeout;
-    let balconyTimeout;
     
-    card.addEventListener('mouseenter', () => {
-      // Clear any existing timeouts
-      clearTimeout(zoomTimeout);
-      clearTimeout(balconyTimeout);
-      
-      // After 3 seconds, show balcony image
-      balconyTimeout = setTimeout(() => {
+    // Start the switching immediately
+    const switchImages = () => {
+      if(isShowingRoom) {
         roomImg.style.opacity = '0';
         balconyImg.style.opacity = '1';
-        balconyImg.classList.add('zoomed');
-      }, 3000);
-      
-      // Add zoom class to room image immediately
-      roomImg.classList.add('zoomed');
-    });
+      } else {
+        roomImg.style.opacity = '1';
+        balconyImg.style.opacity = '0';
+      }
+      isShowingRoom = !isShowingRoom;
+    };
     
-    card.addEventListener('mouseleave', () => {
-      // Clear the timeouts if user leaves
-      clearTimeout(zoomTimeout);
-      clearTimeout(balconyTimeout);
-      
-      // Immediately reset both images
-      roomImg.style.opacity = '1';
-      roomImg.classList.remove('zoomed');
-      balconyImg.style.opacity = '0';
-      balconyImg.classList.remove('zoomed');
-    });
+    // Switch every 5 seconds (5000ms)
+    setInterval(switchImages, 5000);
+    
+    // First switch after 3 seconds
+    setTimeout(switchImages, 3000);
   });
+});
 
   // Touch support for mobile devices
   document.querySelectorAll('.room-card').forEach(card => {
