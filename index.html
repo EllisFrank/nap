@@ -58,6 +58,7 @@
       align-items: center;
       overflow: hidden;
       background-color: var(--secondary);
+      text-align: center; /* Center content horizontally */
     }
 
     .header-bg {
@@ -98,31 +99,42 @@
     .header-content {
       position: relative;
       z-index: 2;
-      width: 50%;
+      width: 100%; /* Take full width on smaller screens */
       padding: 0 40px;
+      margin-top: 250px; /* Adjusted for better placement relative to logo */
     }
 
     .logo {
       position: absolute;
-      top: 30px;
-      left: 40px;
-      font-size: 28px;
+      top: 15%; /* Adjusted for better mobile positioning */
+      left: 0;
+      right: 0;
+      font-size: 3rem;
       font-weight: 700;
       color: var(--light);
       z-index: 3;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .logo-subtitle {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      font-weight: 500;
     }
 
     .header-content h1 {
-      font-size: 3.5rem;
-      margin-bottom: 20px;
+      font-size: 2.5rem; /* Adjusted for better mobile scaling */
+      margin-bottom: 15px;
       color: var(--light);
+      white-space: normal; /* Allow text to wrap */
     }
 
     .header-content p {
-      font-size: 1.2rem;
-      margin-bottom: 40px;
+      font-size: 1.1rem;
+      margin: 0 auto 40px; /* Center paragraph and add bottom margin */
       color: rgba(255,255,255,0.9);
-      max-width: 500px;
+      max-width: 500px; /* Constrain max-width for readability */
     }
 
     .btn {
@@ -138,6 +150,7 @@
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 1px;
+      margin-top: 20px;
     }
 
     .btn:hover {
@@ -175,7 +188,7 @@
 
     .room-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted minmax for better mobile flow */
       gap: 40px;
     }
 
@@ -202,30 +215,26 @@
     .image-container img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
       position: absolute;
       top: 0;
       left: 0;
-      transition: all 0.5s ease-in-out;
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Added transform for smoother sizing */
     }
 
     /* Initial state - room image visible */
     .image-container img.room {
       opacity: 1;
       z-index: 1;
+      object-fit: cover; /* Keep room image covering the container */
     }
     
-    /* Initial state - balcony image hidden */
+    /* Initial state - balcony image hidden and will 'contain' when active */
     .image-container img.balcony {
       opacity: 0;
       z-index: 2;
-    }
-
-    /* Zoomed state - show full image */
-    .image-container img.zoomed {
-      object-fit: contain;
-      background-color: #f5f5f5;
-      transform: scale(1.05);
+      object-fit: contain; /* Ensure balcony image is fully visible */
+      background-color: #f5f5f5; /* Add a background for contained images */
+      padding: 10px; /* Optional: Add a slight padding if needed for contained images */
     }
 
     .room-details {
@@ -242,12 +251,35 @@
       color: var(--text-light);
       margin-bottom: 20px;
     }
+    
+    .room-details ul {
+        list-style: none; /* Remove default bullet points */
+        margin-bottom: 20px;
+        padding-left: 0;
+    }
+
+    .room-details ul li {
+        margin-bottom: 8px;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+    }
+
+    .room-details ul li::before {
+        content: '•'; /* Custom bullet point */
+        color: var(--primary); /* Color for the bullet */
+        font-size: 1.2em;
+        margin-right: 8px;
+        line-height: 1;
+    }
 
     .room-meta {
       display: flex;
+      flex-direction: column; /* Stack elements vertically on small screens */
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start; /* Align to start when stacked */
       margin-top: 25px;
+      gap: 15px; /* Space between items when stacked */
     }
 
     .price {
@@ -263,6 +295,8 @@
       border-radius: 4px;
       font-weight: 600;
       transition: all 0.3s ease;
+      text-align: center;
+      width: 100%; /* Make button full width on mobile */
     }
 
     .book-btn:hover {
@@ -272,6 +306,7 @@
     /* Split Layout Section */
     .split-section {
       display: flex;
+      flex-direction: column; /* Default to column for mobile first */
       min-height: 600px;
       background: var(--light);
     }
@@ -280,6 +315,7 @@
       flex: 1;
       background-size: cover;
       background-position: center;
+      height: 300px; /* Set a height for mobile */
     }
 
     .split-content {
@@ -290,6 +326,7 @@
       justify-content: center;
       background-color: var(--secondary);
       color: var(--light);
+      text-align: center; /* Center content on mobile */
     }
 
     .split-content h2 {
@@ -312,7 +349,7 @@
 
     .facility-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjusted minmax for smaller screens */
       gap: 30px;
       margin-top: 50px;
     }
@@ -351,9 +388,16 @@
 
     .footer-content {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjusted minmax for responsiveness */
       gap: 40px;
       margin-bottom: 40px;
+      text-align: center; /* Center footer content on mobile */
+    }
+
+    .footer-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center items in column for mobile */
     }
 
     .footer-column h3 {
@@ -363,10 +407,14 @@
     }
 
     .footer-column p, .footer-column a {
-      margin-bottom: 15px;
+      margin-bottom: 10px; /* Reduced margin for stacked links */
       display: block;
       opacity: 0.8;
       transition: opacity 0.3s;
+    }
+
+    .footer-column a:last-child {
+        margin-bottom: 0; /* Remove bottom margin for the last item */
     }
 
     .footer-column a:hover {
@@ -462,20 +510,68 @@
       background: var(--primary-dark);
     }
 
-    /* Responsive Styles */
-    @media (max-width: 1024px) {
+    /* Responsive Styles - Tablet & Desktop overrides */
+    @media (min-width: 769px) {
       .header-content {
-        width: 60%;
+        width: 50%;
+        text-align: left;
+        padding: 0 40px;
+        margin-top: 0; /* Reset margin for desktop */
+      }
+
+      .logo {
+        top: 30px;
+        left: 40px;
+        text-align: left;
+        font-size: 28px; /* Reset font size for desktop */
+      }
+
+      .logo-subtitle {
+          font-size: 1rem; /* Adjust as needed for desktop */
+          margin-top: 0;
+      }
+
+      .header-content h1 {
+        font-size: 3.5rem;
+        white-space: normal;
+      }
+
+      .header-content p {
+        margin-left: 0;
       }
 
       .split-section {
-        flex-direction: column;
+        flex-direction: row; /* Row direction for larger screens */
       }
 
       .split-image {
-        height: 400px;
+        height: auto; /* Allow height to adjust naturally */
       }
 
+      .split-content {
+        text-align: left;
+      }
+
+      .room-meta {
+        flex-direction: row; /* Row direction for larger screens */
+        align-items: center; /* Align to center when in a row */
+        gap: 0; /* Remove gap when in a row */
+      }
+
+      .book-btn {
+        width: auto; /* Auto width for desktop button */
+      }
+
+      .footer-content {
+        text-align: left;
+      }
+
+      .footer-column {
+          align-items: flex-start; /* Align to start for desktop */
+      }
+    }
+
+    @media (max-width: 1024px) {
       .split-content {
         padding: 60px 40px;
       }
@@ -487,17 +583,11 @@
 
     @media (max-width: 768px) {
       .header-content {
-        width: 100%;
         padding: 0 30px;
-        text-align: center;
       }
 
       .header-content h1 {
         font-size: 2.8rem;
-      }
-
-      .header-content p {
-        margin: 0 auto 30px;
       }
 
       .section-title h2 {
@@ -523,8 +613,12 @@
 
     @media (max-width: 480px) {
       .logo {
-        font-size: 24px;
-        left: 20px;
+        font-size: 2.2rem; /* Even smaller on very small screens */
+        top: 10%; /* Adjust position for smaller screens */
+      }
+
+      .logo-subtitle {
+          font-size: 1rem;
       }
 
       .header-content h1 {
@@ -567,12 +661,19 @@
       .facility-grid {
         grid-template-columns: 1fr;
       }
+
+      .popup-box {
+          padding: 30px 20px;
+      }
+
+      .popup-box h2 {
+          font-size: 1.8rem;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- Popup -->
 <div class="popup-overlay" id="popup">
   <div class="popup-box">
     <h2>Before You Proceed</h2>
@@ -611,7 +712,6 @@
       <h2>Our Room Options</h2>
     </div>
     <div class="room-grid">
-      <!-- 2-in-1 Room -->
       <div class="room-card">
         <div class="image-container">
           <img src="https://lh3.googleusercontent.com/p/AF1QipOnZSiTi0dGwhgAkM7SA9RMGZZsnZbXNqo3AkOL=s1360-w1360-h1020-rw" class="room" alt="2-in-1 Room">
@@ -627,7 +727,6 @@
         </div>
       </div>
 
-      <!-- 3-in-1 Room -->
       <div class="room-card">
         <div class="image-container">
           <img src="https://lh3.googleusercontent.com/p/AF1QipPkP0MulRTYy43WQzL_YpPqAlstlpiEwfUqSGVZ=s1360-w1360-h1020-rw" class="room" alt="3-in-1 Room">
@@ -643,7 +742,6 @@
         </div>
       </div>
 
-      <!-- Annex 3-in-1 Room -->
       <div class="room-card">
         <div class="image-container">
           <img src="https://lh3.googleusercontent.com/u_igAPwV-RkX4MMCi1n_iixHSJeXPLK84od-yY5R8tZyvHykOduYydqmMoipbopZuWbTf4woS4bLvN0b=s265-w265-h265" class="room" alt="Annex 3-in-1 Room">
@@ -651,13 +749,12 @@
         </div>
         <div class="room-details">
           <h3>Annex 3-in-1 Room</h3>
-          <p>Enjoy a spacious three-in-a-room setup located in our annex building.
-This option features:
-
-<li>A shared washroom</i>
-<li>A shared kitchen</i>
-<li>Comfortable space for up to three occupants</i>
-</p>
+          <p>Enjoy a spacious three-in-a-room setup located in our annex building.</p>
+          <ul>
+            <li>A shared washroom</li>
+            <li>A shared kitchen</li>
+            <li>Comfortable space for up to three occupants</li>
+          </ul>
           <div class="room-meta">
             <div class="price">GH₵4,000 / Year</div>
             <a href="https://forms.gle/VRagwUnHKAGanKaZ7" target="_blank" class="book-btn">Book Now</a>
@@ -719,7 +816,7 @@ This option features:
       </div>
     </div>
     <div class="copyright">
-      <p>&copy; 2025 Nana Adjei Plaza. All Rights Reserved.</p>
+      <p>© 2025 Nana Adjei Plaza. All Rights Reserved.</p>
     </div>
   </div>
 </footer>
@@ -755,13 +852,12 @@ This option features:
       const balconyImg = card.querySelector('.balcony');
       
       const switchImages = () => {
-        roomImg.style.transition = 'opacity 0.5s ease-in-out';
-        balconyImg.style.transition = 'opacity 0.5s ease-in-out';
-        
         if(isShowingRoom) {
+          // Transition to balcony image
           roomImg.style.opacity = '0';
           balconyImg.style.opacity = '1';
         } else {
+          // Transition back to room image
           roomImg.style.opacity = '1';
           balconyImg.style.opacity = '0';
         }
@@ -771,12 +867,11 @@ This option features:
       // Switch every 5 seconds (5000ms)
       setInterval(switchImages, 5000);
       
-      // First switch after 3 seconds
+      // Initial switch after 3 seconds to show balcony first
       setTimeout(switchImages, 3000);
     });
   });
 
-  // Remove all touch/hover event listeners - we don't need them anymore
   // Keep the popup functionality
   function showPopup() {
     document.getElementById('popup').classList.add('active');
