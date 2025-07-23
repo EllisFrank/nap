@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <style>
+  <style>    
     :root {
       --primary: #FFA630;
       --primary-dark: #E68B1C;
@@ -526,6 +526,95 @@
       background: var(--primary-dark);
     }
 
+    /* NEW: Login Modal Styles */
+    .login-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .login-modal.active {
+      display: flex;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .login-form {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: left;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .login-modal.active .login-form {
+      transform: translateY(0);
+    }
+
+    .login-form h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
+    .login-form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--secondary);
+      font-size: 0.9rem;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .login-form .error-message {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .login-form button {
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      color: #999;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--dark);
+    }
+
     /* Responsive Styles - Tablet & Desktop overrides */
     @media (min-width: 480px) {
       .logo {
@@ -566,11 +655,17 @@
         text-align: left;
         font-size: 28px;
         padding: 0;
+        
+        /* MODIFIED: Desktop centering */
+        text-align: center;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
       }
 
       .logo-subtitle {
-          font-size: 1rem;
-          margin-top: 0;
+        font-size: 1rem;
+        margin-top: 0;
       }
 
       .header-content {
@@ -578,15 +673,27 @@
         text-align: left;
         padding: 0 40px;
         margin-top: 0;
+        
+        /* MODIFIED: Desktop centering */
+        width: 100%;
+        text-align: center;
+        padding: 0 20px;
       }
 
       .header-content h1 {
         font-size: 2.8rem;
+        
+        /* NEW: Ensure text is on one line */
+        white-space: nowrap;
       }
 
       .header-content p {
         margin-left: 0;
         font-size: 1.1rem;
+        
+        /* MODIFIED: Desktop centering */
+        max-width: 600px;
+        margin: 0 auto 30px;
       }
 
       .split-section {
@@ -657,6 +764,22 @@
   </div>
 </div>
 
+<div class="login-modal" id="loginModal">
+  <div class="login-form">
+    <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+    <h2>Enter Your Booking Details</h2>
+    <p>Please enter your serial number and PIN to access the booking form.</p>
+    <form id="loginForm">
+      <label for="serial">Serial Number:</label>
+      <input type="text" id="serial" name="serial" required>
+      <label for="pin">PIN:</label>
+      <input type="password" id="pin" name="pin" required>
+      <p class="error-message" id="loginError">Invalid serial number or PIN. Please try again.</p>
+      <button type="submit" class="btn">Proceed to Form</button>
+    </form>
+  </div>
+</div>
+
 <header>
   <div class="header-bg">
     <div class="slide active" style="background-image: url('https://lh3.googleusercontent.com/p/AF1QipNnh1wDNyC9Ykqs1CZajmQ6fnPsQipOOMlF-5Q-=s680-w680-h510-rw')"></div>
@@ -691,7 +814,7 @@
           <p>Shared room with separate beds and study desks. Perfect for students who want privacy while sharing costs.</p>
           <div class="room-meta">
             <div class="price">GH₵7,000 / Year</div>
-            <a href="https://forms.gle/VRagwUnHKAGanKaZ7" target="_blank" class="book-btn">Book Now</a>
+            <a href="#" class="book-btn" onclick="openLoginModal(event)">Book Now</a>
           </div>
         </div>
       </div>
@@ -706,7 +829,7 @@
           <p>Shared room with storage and study table. Economical option for groups of three friends.</p>
           <div class="room-meta">
             <div class="price">GH₵5,000 / Year</div>
-            <a href="https://forms.gle/VRagwUnHKAGanKaZ7" target="_blank" class="book-btn">Book Now</a>
+            <a href="#" class="book-btn" onclick="openLoginModal(event)">Book Now</a>
           </div>
         </div>
       </div>
@@ -726,7 +849,7 @@
           </ul>
           <div class="room-meta">
             <div class="price">GH₵4,000 / Year</div>
-            <a href="https://forms.gle/VRagwUnHKAGanKaZ7" target="_blank" class="book-btn">Book Now</a>
+            <a href="#" class="book-btn" onclick="openLoginModal(event)">Book Now</a>
           </div>
         </div>
       </div>
@@ -781,7 +904,7 @@
       <div class="footer-column">
         <h3>Quick Links</h3>
         <a href="#rooms">Room Options</a>
-        <a href="https://forms.gle/VRagwUnHKAGanKaZ7" target="_blank">Booking Form</a>
+        <a href="#" onclick="openLoginModal(event)">Booking Form</a>
       </div>
     </div>
     <div class="copyright">
@@ -791,6 +914,61 @@
 </footer>
 
 <script>
+  // === NEW: Login Gate and Validation ===
+  // Sample credentials for client-side validation
+  const validCredentials = [
+    { serial: "NAA001", pin: "1234" }, { serial: "NAA002", pin: "5678" },
+    { serial: "NAA003", pin: "9012" }, { serial: "NAA004", pin: "3456" },
+    { serial: "NAA005", pin: "7890" }, { serial: "NAA006", pin: "2345" },
+    { serial: "NAA007", pin: "6789" }, { serial: "NAA008", pin: "1122" },
+    { serial: "NAA009", pin: "3344" }, { serial: "NAA010", pin: "5566" },
+    { serial: "NAA011", pin: "7788" }, { serial: "NAA012", pin: "9900" },
+    { serial: "NAA013", pin: "1212" }, { serial: "NAA014", pin: "3434" },
+    { serial: "NAA015", pin: "5656" }, { serial: "NAA016", pin: "7878" },
+    { serial: "NAA017", pin: "9090" }, { serial: "NAA018", pin: "1313" },
+    { serial: "NAA019", pin: "4242" }, { serial: "NAA020", pin: "7575" },
+    { serial: "NAA021", pin: "8686" }, { serial: "NAA022", pin: "9797" },
+    { serial: "NAA023", pin: "2468" }, { serial: "NAA024", pin: "1357" },
+    { serial: "NAA025", pin: "4321" }
+  ];
+
+  const loginModal = document.getElementById('loginModal');
+  const loginForm = document.getElementById('loginForm');
+  const serialInput = document.getElementById('serial');
+  const pinInput = document.getElementById('pin');
+  const loginError = document.getElementById('loginError');
+
+  function openLoginModal(event) {
+    if (event) event.preventDefault();
+    loginModal.classList.add('active');
+  }
+
+  function closeLoginModal() {
+    loginModal.classList.remove('active');
+    loginError.style.display = 'none';
+    loginForm.reset();
+  }
+
+  loginForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    handleLogin();
+  });
+
+  function handleLogin() {
+    const serial = serialInput.value.toUpperCase();
+    const pin = pinInput.value;
+
+    const isValid = validCredentials.some(cred => cred.serial === serial && cred.pin === pin);
+
+    if (isValid) {
+      window.location.href = 'https://forms.gle/VRagwUnHKAGanKaZ7';
+    } else {
+      loginError.style.display = 'block';
+      pinInput.value = ''; // Clear PIN field on error
+    }
+  }
+  // === END NEW CODE ===
+
   // Background slideshow
   let currentSlide = 0;
   const slides = document.querySelectorAll('.slide');
@@ -871,6 +1049,5 @@
     });
   });
 </script>
-
 </body>
 </html>
